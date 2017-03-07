@@ -12,12 +12,14 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * Created by harle on 02.03.2017.
  */
+
 @WebFilter(filterName = "StatsFilter", urlPatterns = {"/**"})
 public class StatsFilter implements Filter {
 
     private class TimeStatisticsMap extends LinkedHashMap<Integer, Integer> {
-        public static final int MAP_SIZE = 24;
-        public static final float LOAD_FACTOR = 1f;
+
+        private static final int MAP_SIZE = 24;
+        private static final float LOAD_FACTOR = 1f;
         private Lock statLock = new ReentrantLock(true);
 
         public TimeStatisticsMap() {
@@ -51,8 +53,8 @@ public class StatsFilter implements Filter {
             statLock.lock();
             try {
                 LocalTime time = LocalTime.now();
-                int numberOfInvoke = this.get(time.getHour());
-                this.put(time.getHour(), numberOfInvoke++);
+                int numberOfInvoke = super.get(time.getHour());
+                super.put(time.getHour(), numberOfInvoke++);
             } finally {
                 statLock.unlock();
             }
