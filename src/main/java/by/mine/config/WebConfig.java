@@ -17,7 +17,6 @@ import org.springframework.web.servlet.view.JstlView;
 @Configuration
 @EnableWebMvc
 @ComponentScan("by.mine")
-@ImportResource("/WEB-INF/jmx.xml")
 public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Bean
