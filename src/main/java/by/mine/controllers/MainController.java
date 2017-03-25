@@ -4,11 +4,16 @@ import by.mine.beans.User;
 import by.mine.dao.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by harle on 01.03.2017.
@@ -17,17 +22,9 @@ import java.util.List;
 @Controller
 public class MainController {
 
-    @Autowired
-    UserRepository userRepository;
-
     @RequestMapping(path = "/", method = RequestMethod.GET)
-    public String mainPageReturn(){
+    public String mainPage(Model model) {
+        model.addAttribute("user", new User());
         return "index";
     }
-
-    @ResponseBody
-    @RequestMapping(path = "/users", method = RequestMethod.GET)
-    public List<User> getAllUsers() {
-        userRepository.save(new User());
-        return userRepository.findAll(); }
 }

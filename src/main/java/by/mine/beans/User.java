@@ -51,36 +51,32 @@ public class User {
         return id;
     }
 
-    public User setId(int id) {
+    public void setId(int id) {
         this.id = id;
-        return this;
     }
 
     public String getLogin() {
         return login;
     }
 
-    public User setLogin(String login) {
+    public void setLogin(String login) {
         this.login = login;
-        return this;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public User setPassword(String password) {
+    public void setPassword(String password) {
         this.password = password;
-        return this;
     }
 
     public Roles getRole() {
         return role;
     }
 
-    public User setRole(Roles role) {
+    public void setRole(Roles role) {
         this.role = role;
-        return this;
     }
 
     @Override

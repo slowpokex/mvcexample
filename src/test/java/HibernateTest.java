@@ -17,6 +17,6 @@ public class HibernateTest {
 
     @Test
     public void test() {
-        System.out.println(dataSource.getClass());
+        System.out.println();
     }
 }

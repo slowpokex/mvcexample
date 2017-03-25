@@ -15,7 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 public class SecurityConfig{
 
     @Bean
-    public ShaPasswordEncoder getShaPasswordEncoder(){
+    public ShaPasswordEncoder getShaPasswordEncoder() {
         return new ShaPasswordEncoder();
     }
 }

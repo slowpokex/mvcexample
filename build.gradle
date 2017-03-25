@@ -34,6 +34,7 @@ dependencies {
     compile group: 'org.hibernate', name: 'hibernate-core', version: "${hibernateVersion}"
     compile group: 'org.hibernate', name: 'hibernate-entitymanager', version: "${hibernateVersion}"
     compile group: 'org.javassist', name: 'javassist', version: '3+'
+    compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.40'
 
     compile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
     compile group: 'javax.servlet', name: 'jstl', version: '1.2'

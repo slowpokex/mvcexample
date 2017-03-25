@@ -2,12 +2,12 @@ package by.mine.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
@@ -24,43 +24,52 @@ import java.util.Properties;
 @EnableTransactionManagement
 @PropertySource("classpath:app.properties")
 @EnableJpaRepositories("by.mine.dao")
-@ComponentScan("by.mine")
 public class DataConfig {
 
     //Settings constant
+    private static final String DB_CLASS_NAME = "db.className";
+    private static final String DB_URL = "db.url";
+    private static final String DB_USER = "db.user";
+    private static final String DB_PASS = "db.pass";
+
     private static final String HIBERNATE_DIALECT = "hibernate.dialect";
     private static final String HIBERNATE_SHOW_SQL = "hibernate.show_sql";
     private static final String HIBERNATE_HBM2DDL_AUTO = "hibernate.hbm2ddl.auto";
-    private static final String[] PACKAGES_TO_SCAN = {"by.mine.beans"};
-    private static final boolean SHOW_SQL = true;
-    private static final boolean GENERATE_DDL = true;
+    private static final String PACKAGES_TO_SCAN = "hibernate.package_to_scan";
 
     @Autowired
-    Environment env;
+    private Environment env;
 
-    @Bean
+    /*@Bean
     public DataSource dataSource() {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
         EmbeddedDatabaseBuilder databaseBuilder = new EmbeddedDatabaseBuilder();
         EmbeddedDatabase db = databaseBuilder
                 .setType(EmbeddedDatabaseType.DERBY)
                 .build();
         return db;
+    }*/
+
+    @Bean
+    public DataSource dataSource() {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName(env.getRequiredProperty(DB_CLASS_NAME));
+        dataSource.setUrl(env.getRequiredProperty(DB_URL));
+        dataSource.setUsername(env.getRequiredProperty(DB_USER));
+        dataSource.setPassword(env.getRequiredProperty(DB_PASS));
+        return dataSource;
     }
 
     @Bean
     @Autowired
     public EntityManagerFactory entityManagerFactory(DataSource dataSource, Properties hibernateProperties) {
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-        vendorAdapter.setGenerateDdl(GENERATE_DDL);
-        vendorAdapter.setShowSql(SHOW_SQL);
-
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setDataSource(dataSource);
         factory.setJpaVendorAdapter(vendorAdapter);
-        factory.setPackagesToScan(PACKAGES_TO_SCAN);
+        factory.setPackagesToScan(env.getProperty(PACKAGES_TO_SCAN));
         factory.setJpaProperties(hibernateProperties);
         factory.afterPropertiesSet();
-
         return factory.getObject();
     }
 
