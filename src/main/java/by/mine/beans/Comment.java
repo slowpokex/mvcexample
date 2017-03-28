@@ -13,6 +13,7 @@ import java.util.Objects;
  * Created by Mikita Isakau
  * Creation date: 15.02.2017
  */
+
 @Entity
 @Table(name = "comments")
 public class Comment {

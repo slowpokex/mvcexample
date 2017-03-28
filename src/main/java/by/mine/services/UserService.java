@@ -4,9 +4,7 @@ import by.mine.beans.User;
 
 import java.util.List;
 
-/**
- * Created by harle on 22.03.2017.
- */
+
 public interface UserService {
     User saveUser(User user);
     void deleteUser(User user);
@@ -16,3 +14,5 @@ public interface UserService {
     List<User> getUsersByLogin(String login);
     User getUsersByID(int id);
 }
+
+

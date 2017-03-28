@@ -1,5 +1,6 @@
 package by.mine.config;
 
+import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Properties;
+import java.util.function.BiFunction;
 
 @Configuration
 @EnableTransactionManagement
@@ -40,23 +42,15 @@ public class DataConfig {
     @Autowired
     private Environment env;
 
-    /*@Bean
-    public DataSource dataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        EmbeddedDatabaseBuilder databaseBuilder = new EmbeddedDatabaseBuilder();
-        EmbeddedDatabase db = databaseBuilder
-                .setType(EmbeddedDatabaseType.DERBY)
-                .build();
-        return db;
-    }*/
-
     @Bean
     public DataSource dataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName(env.getRequiredProperty(DB_CLASS_NAME));
         dataSource.setUrl(env.getRequiredProperty(DB_URL));
         dataSource.setUsername(env.getRequiredProperty(DB_USER));
         dataSource.setPassword(env.getRequiredProperty(DB_PASS));
+        dataSource.setInitialSize(5);
+        dataSource.setMaxActive(10);
         return dataSource;
     }
 
