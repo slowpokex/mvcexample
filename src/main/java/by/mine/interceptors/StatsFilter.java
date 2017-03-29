@@ -1,4 +1,4 @@
-package by.mine.filters;
+package by.mine.interceptors;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;

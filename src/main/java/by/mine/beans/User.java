@@ -1,53 +1,107 @@
 package by.mine.beans;
 
-import org.springframework.jmx.export.annotation.ManagedAttribute;
-import org.springframework.jmx.export.annotation.ManagedOperation;
-import org.springframework.jmx.export.annotation.ManagedResource;
-import org.springframework.stereotype.Component;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
+import java.util.Objects;
 
 /**
- * Created by harle on 02.03.2017.
+ * Package: by.mine.beans
+ * Project name: mvc
+ * Created by Mikita Isakau
+ * Creation date: 15.02.2017
  */
-
-@Component
-@ManagedResource(objectName = "by.mine.beans:name=User")
+@Entity
+@Table(name = "users")
 public class User {
 
+    public enum Roles {
+        GUEST, USER, ADMIN, MODERATOR
+    }
+
+    @Id
+    @GeneratedValue(generator = "increment")
+    @GenericGenerator(name= "increment", strategy= "increment")
+    @Column(name = "id", nullable = false)
+    private int id;
+
+    @Column(name = "login", nullable = false)
     private String login;
-    private String fullName;
 
-    public User() { }
+    @JsonIgnore
+    @Column(name = "password")
+    private String password;
 
-    @ManagedAttribute
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
+    private Roles role;
+
+    public User(String login, String password, Roles role) {
+        this.login = login;
+        this.password = password;
+        this.role = role;
+    }
+
+    public User() {
+        this("","", Roles.GUEST);
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getLogin() {
         return login;
     }
 
-    @ManagedAttribute
     public void setLogin(String login) {
         this.login = login;
     }
 
-    @ManagedAttribute
-    public String getFullName() {
-        return fullName;
+    public String getPassword() {
+        return password;
     }
 
-    @ManagedAttribute
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    @ManagedOperation
-    public void sayHello() {
-        System.out.println(this + " be here!");
+    public Roles getRole() {
+        return role;
+    }
+
+    public void setRole(Roles role) {
+        this.role = role;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return id == user.id &&
+                role == user.role &&
+                Objects.equals(login, user.login) &&
+                Objects.equals(password, user.password);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, login, password, role);
     }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("User{");
-        sb.append("login='").append(login).append('\'');
-        sb.append(", fullName='").append(fullName).append('\'');
+        sb.append("id=").append(id);
+        sb.append(", login='").append(login).append('\'');
+        sb.append(", password='").append(password).append('\'');
+        sb.append(", admin=").append(role);
         sb.append('}');
         return sb.toString();
     }
