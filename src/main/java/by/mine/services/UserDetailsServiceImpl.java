@@ -2,7 +2,6 @@ package by.mine.services;
 
 import by.mine.beans.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,10 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.Set;
-
-/**
- * Created by Harley on 28.03.2017.
- */
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
